@@ -1,0 +1,29 @@
+{
+  "name": "discord.js-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chilipizdrick/discord.js-bot.git"
+  },
+  "keywords": [
+    "discord",
+    "discord.js"
+  ],
+  "author": "chilipizdrick",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chilipizdrick/discord.js-bot/issues"
+  },
+  "homepage": "https://github.com/chilipizdrick/discord.js-bot#readme",
+  "dependencies": {
+    "discord.js": "^14.11.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.43.0"
+  }
+}
