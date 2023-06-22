@@ -1,8 +1,10 @@
 import { REST, Routes } from 'discord.js';
-import { clientId, guildId, token } from './config.json' assert { type: "json" };
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'url';
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const { clientId, guildId, token } = require('./config.json');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,8 +21,8 @@ for (const folder of commandFolders) {
 	// Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
-		const command = require(filePath);
-		if ('data' in command && 'execute' in command) {
+		const command = await import(`file:///${filePath}`).then();
+		if (command.data && command.execute) {
 			commands.push(command.data.toJSON());
 		} else {
 			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
