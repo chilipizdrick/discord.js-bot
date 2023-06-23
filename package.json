@@ -24,11 +24,12 @@
   "homepage": "https://github.com/chilipizdrick/discord.js-bot#readme",
   "dependencies": {
     "@discordjs/voice": "^0.16.0",
-    "base-64": "^1.0.0",
+    "blueimp-md5": "^2.19.0",
     "discord.js": "^14.11.0",
     "ffmpeg-static": "^5.1.0",
     "libsodium-wrappers": "^0.7.11",
-    "node-fetch": "^3.3.1"
+    "node-fetch": "^3.3.1",
+    "superagent": "^8.0.9"
   },
   "devDependencies": {
     "eslint": "^8.43.0"

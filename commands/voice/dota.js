@@ -7,8 +7,8 @@ const data = new SlashCommandBuilder()
     .setName('dota')
     .setDescription('Plays dota.');
 
-async function execute(interaction) {
-	await interaction.reply("Executig the command...");
+const execute = async (interaction) => {
+	await interaction.deferReply();
 	
 	const audioFiles = fs.readdirSync(FILES_DIR);
 	let pathsList = [];

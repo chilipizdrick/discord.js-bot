@@ -10,7 +10,10 @@ const { token } = require('./config.json');
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds,
+									  GatewayIntentBits.GuildMessages,
+									  GatewayIntentBits.MessageContent,
+									  GatewayIntentBits.GuildVoiceStates] });
 
 client.commands = new Collection();
 

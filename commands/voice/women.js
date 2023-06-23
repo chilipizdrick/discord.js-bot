@@ -5,8 +5,8 @@ const data = new SlashCommandBuilder()
 .setName('women')
 .setDescription('Plays women.');
 
-async function execute(interaction) {
-    await interaction.reply("Executig the command...");
+const execute = async (interaction) => {
+    await interaction.deferReply();
     
     const audioPlayer = createAudioPlayer();
     
