@@ -1,3 +1,5 @@
 node_modules/
+userdata/
 .eslintrc.json
 config.json
+test.js
