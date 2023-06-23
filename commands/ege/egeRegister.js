@@ -2,31 +2,31 @@ import { SlashCommandBuilder } from 'discord.js';
 import fs from 'node:fs';
 
 const data = new SlashCommandBuilder()
-    .setName('ege_reg')
-    .setDescription('Autheticicate at checkege.reustest.ru')
-    .addStringOption(option =>
+	.setName('ege_reg')
+	.setDescription('Autheticicate at checkege.reustest.ru')
+	.addStringOption(option =>
 		option.setName('firstname')
 			.setDescription('Ваше имя')
-            .setRequired(true))
-    .addStringOption(option =>
-        option.setName('lastname')
-            .setDescription('Ваша фамилия')
-            .setRequired(true))
-    .addStringOption(option =>
-        option.setName('surname')
-            .setDescription('Ваше отчество')
-            .setRequired(true))
-    .addStringOption(option =>
-        option.setName('id-number')
-            .setDescription('Номер вашего паспорта (без серии)')
-            .setRequired(true))
-    .addStringOption(option =>
-        option.setName('region')
-            .setDescription('Ваш регион (двузначным числом)')
-            .setRequired(true));
+			.setRequired(true))
+	.addStringOption(option =>
+		option.setName('lastname')
+			.setDescription('Ваша фамилия')
+			.setRequired(true))
+	.addStringOption(option =>
+		option.setName('surname')
+			.setDescription('Ваше отчество')
+			.setRequired(true))
+	.addStringOption(option =>
+		option.setName('id-number')
+			.setDescription('Номер вашего паспорта (без серии)')
+			.setRequired(true))
+	.addStringOption(option =>
+		option.setName('region')
+			.setDescription('Ваш регион (двузначным числом)')
+			.setRequired(true));
 
 const execute = async (interaction) => {
-    await interaction.deferReply();
+	await interaction.deferReply();
 
 	try {
 		const userData = JSON.parse(fs.readFileSync("userdata/user-data.json"));

@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, AttachmentBuilder} from 'discord.js';
+import { SlashCommandBuilder, AttachmentBuilder } from 'discord.js';
 import fetch from 'node-fetch';
 import fs from 'node:fs';
 import md5 from 'blueimp-md5';
@@ -30,53 +30,34 @@ const execute = async (interaction) => {
 
         const captchaEmbed = {
             color: 0xFF0000,
-	        title: 'Введите капчу: \n',
+            title: 'Введите капчу: \n',
             image: {
                 url: 'attachment://captcha.jpg',
-                },
-            };
-        
-        const captchaImg = new AttachmentBuilder('assets/images/captcha.jpg');
-        await interaction.editReply( {embeds: [captchaEmbed], files: [captchaImg] });
-
-        let token = '';
-        for (const char of captchaObj["Token"]) {
-            if ([',', '/', '?', ':', '@', '&', '=', '+', '$', '#'].includes(char)) {
-                token += encodeURIComponent(char);
-            } else {
-                token += char;
-            }
+            },
         };
 
-        const mesFilter = m => (m.content.length === 6) && (m.member.id !== clientId);
-        const userResponse = await interaction.channel.awaitMessages({ mesFilter, max: 1, time: 60_000 })
-            .then(collectedMessages => collectedMessages.first().content.trim());
-        console.log(`Entered captcha: ${userResponse}`);
-        
-        const payloadData = {"Hash": hash(currUserData),
-                             "Code": "",
-                             "Document": `000000${currUserData["id-number"]}`,
-                             "Region": currUserData["region"],
-                             "AgereeCheck": "on",
-                             "Captcha": userResponse,
-                             "Token": token,
-                             "reCaptureToken": userResponse}
-        const payloadArray = [];
-        for (const key in payloadData) {
-            payloadArray.push(`${key}=${payloadData[key]}`);
-        }
-        const payload = payloadArray.join('&');
+        const captchaImg = new AttachmentBuilder('assets/images/captcha.jpg');
+        await interaction.editReply({ embeds: [captchaEmbed], files: [captchaImg] });
 
-        const dashboard = await superagent
+        const captchaToken = tokenEncodeURI(captchaObj["Token"]);
+
+        const mesFilter = m => (m.content.length === 6) && (m.member.id !== clientId);
+        const userCaptchaResponse = await interaction.channel.awaitMessages({ mesFilter, max: 1, time: 60_000 })
+            .then(collectedMessages => collectedMessages.first().content.trim());
+        console.log(`Entered captcha: ${userCaptchaResponse}`);
+
+        const payload = collectPayload(hash(currUserData), currUserData["id-number"], currUserData["region"], userCaptchaResponse, captchaToken);
+
+        await superagent
             .post(LOGIN_URL)
             .send(payload)
             .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
-            .then(dashboard => console.log(dashboard.text));
-        
+            .then(res => console.log(res.text));
+
         const examData = await superagent
-        .get(EXAM_URL)
-        .then(res => JSON.parse(res.text));
-        
+            .get(EXAM_URL)
+            .then(res => JSON.parse(res.text));
+
         const examPoints = {}
         for (const exam of examData["Result"]["Exams"]) {
             if (exam["Subject"] === "Сочинение") {
@@ -88,20 +69,33 @@ const execute = async (interaction) => {
 
         const resultsEmbed = {
             color: 0x00FF00,
-	        title: 'Ваши баллы: \n',
+            title: 'Ваши баллы: \n',
             fields: []
-            };
+        };
 
         for (const key in examPoints) {
-            resultsEmbed["fields"].push({ name: key, value: examPoints[key]});
+            resultsEmbed["fields"].push({ name: key, value: examPoints[key] });
         }
 
         await interaction.channel.send({ embeds: [resultsEmbed] })
+        await interaction.deleteReply();
 
     } catch (error) {
-		interaction.editReply('Caught error while executing the command. Try again or register, if you have\'n yet, using /ege_reg.');
-		console.log(error);
-	};
+        interaction.editReply('Caught error while executing the command. Try again or register using /ege_reg if you have\'n yet.');
+        console.log(error);
+    };
+}
+
+const tokenEncodeURI = (rawToken) => {
+    let token = '';
+    for (const char of rawToken) {
+        if ([',', '/', '?', ':', '@', '&', '=', '+', '$', '#'].includes(char)) {
+            token += encodeURIComponent(char);
+        } else {
+            token += char;
+        }
+    };
+    return token;
 }
 
 const hash = (currUserData) => {
@@ -110,6 +104,24 @@ const hash = (currUserData) => {
         .replace("ё", "е")
         .replace("й", "и")
         .replace("-", ""));
+}
+
+const collectPayload = (hash, idNumber, region, userCaptchaResponse, captchaToken) => {
+    const payloadData = {
+        "Hash": hash,
+        "Code": "",
+        "Document": `000000${idNumber}`,
+        "Region": region,
+        "AgereeCheck": "on",
+        "Captcha": userCaptchaResponse,
+        "Token": captchaToken,
+        "reCaptureToken": userCaptchaResponse
+    };
+    const payloadArray = [];
+    for (const key in payloadData) {
+        payloadArray.push(`${key}=${payloadData[key]}`);
+    }
+    return payloadArray.join('&');
 }
 
 export { data, execute };
