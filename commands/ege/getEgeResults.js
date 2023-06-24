@@ -69,7 +69,7 @@ const execute = async (interaction) => {
 
         const resultsEmbed = {
             color: 0x00FF00,
-            title: 'Ваши баллы: \n',
+            title: `Баллы ЕГЭ пользователя @${interaction.member.displayName}: \n`,
             fields: []
         };
 
