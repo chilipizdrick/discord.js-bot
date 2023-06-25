@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "cross-env NODE_EXTRA_CA_CERTS=\"faulty_site_certificate\\intermediate.pem\" node index.js",
+    "start": "cross-env NODE_EXTRA_CA_CERTS=\"faulty_site_certificate/intermediate.pem\" node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,6 +25,7 @@
   "dependencies": {
     "@discordjs/voice": "^0.16.0",
     "blueimp-md5": "^2.19.0",
+    "cross-env": "^7.0.3",
     "discord.js": "^14.11.0",
     "ffmpeg-static": "^5.1.0",
     "libsodium-wrappers": "^0.7.11",
