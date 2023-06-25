@@ -61,7 +61,7 @@ const execute = async (interaction) => {
         const examPoints = {}
         for (const exam of examData["Result"]["Exams"]) {
             if (exam["Subject"] === "Сочинение") {
-                examPoints[exam["Subject"]] = "зачёт";
+                exam["Subject"]["TestMark"] == 1 ? examPoints[exam["Subject"]] = "зачёт" : examPoints[exam["Subject"]] = "незачёт";
             } else {
                 examPoints[exam["Subject"]] = exam["TestMark"];
             }
