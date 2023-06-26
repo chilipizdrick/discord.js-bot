@@ -2,13 +2,15 @@ import { SlashCommandBuilder, AttachmentBuilder } from 'discord.js';
 import fetch from 'node-fetch';
 import fs from 'node:fs';
 import md5 from 'blueimp-md5';
+import dotenv from 'dotenv';
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
-const { clientId } = require('../../config.json');
 const superagent = require('superagent').agent();
 const CAPTCHA_URL = 'https://checkege.rustest.ru/api/captcha';
 const LOGIN_URL = 'https://checkege.rustest.ru/api/participant/login';
 const EXAM_URL = 'https://checkege.rustest.ru/api/exam'
+
+dotenv.config();
 
 const data = new SlashCommandBuilder()
     .setName('ege_get')
@@ -18,6 +20,10 @@ const execute = async (interaction) => {
     await interaction.deferReply();
     try {
         const userData = JSON.parse(fs.readFileSync("userdata/user-data.json"));
+        if (!userData.hasOwnProperty(interaction.member.id)) {
+            interaction.editReply('Current user not found in the database. Register first using /ege_reg.')
+            throw 'Current user not found in the database';
+        }
         const currUserData = userData[interaction.member.id];
         const captchaObj = await fetch(CAPTCHA_URL).then(res => res.json()).then();
         const image = Buffer.from(captchaObj["Image"], 'base64');
@@ -41,7 +47,7 @@ const execute = async (interaction) => {
 
         const captchaToken = tokenEncodeURI(captchaObj["Token"]);
 
-        const mesFilter = m => (m.content.length === 6) && (m.member.id !== clientId);
+        const mesFilter = m => (m.content.length === 6) && (m.member.id !== process.env.CLIENT_ID);
         const userCaptchaResponse = await interaction.channel.awaitMessages({ mesFilter, max: 1, time: 60_000 })
             .then(collectedMessages => collectedMessages.first().content.trim());
         console.log(`Entered captcha: ${userCaptchaResponse}`);
@@ -60,16 +66,20 @@ const execute = async (interaction) => {
 
         const examPoints = {}
         for (const exam of examData["Result"]["Exams"]) {
-            if (exam["Subject"] === "Сочинение") {
-                examPoints[exam["Subject"]] = "зачёт";
+            if (exam["StatusName"] === "Оценённый результат") {
+                if (exam["Subject"] === "Сочинение") {
+                    exam["TestMark"] === 1 ? examPoints[exam["Subject"]] = "зачёт" : examPoints[exam["Subject"]] = "незачёт";
+                } else {
+                    examPoints[exam["Subject"]] = exam["TestMark"];
+                }
             } else {
-                examPoints[exam["Subject"]] = exam["TestMark"];
+                examPoints[exam["Subject"]] = "Нет результата";
             }
         }
 
         const resultsEmbed = {
             color: 0x00FF00,
-            title: 'Ваши баллы: \n',
+            title: `Баллы ЕГЭ пользователя @${interaction.member.displayName}: \n`,
             fields: []
         };
 
@@ -81,7 +91,7 @@ const execute = async (interaction) => {
         await interaction.deleteReply();
 
     } catch (error) {
-        interaction.editReply('Caught error while executing the command. Try again or register using /ege_reg if you have\'n yet.');
+        interaction.editReply('Caught error while executing the command. Try again ');
         console.log(error);
     };
 }
