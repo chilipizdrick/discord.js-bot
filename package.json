@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "build": "npm install blueimp-md5 && npm install cross-env && npm install discord.js && npm install dotenv && npm install @discordjs/voice && npm install ffmpeg-static && npm install libsodium-wrappers && npm install node-fetch && node deploy-commands.js",
     "start": "cross-env NODE_EXTRA_CA_CERTS=\"faulty_site_certificate/intermediate.pem\" node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -27,6 +28,7 @@
     "blueimp-md5": "^2.19.0",
     "cross-env": "^7.0.3",
     "discord.js": "^14.11.0",
+    "dotenv": "^16.3.1",
     "ffmpeg-static": "^5.1.0",
     "libsodium-wrappers": "^0.7.11",
     "node-fetch": "^3.3.1",

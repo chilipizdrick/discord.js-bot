@@ -1,11 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import dotenv from 'dotenv';
 import { Client, Collection, GatewayIntentBits} from 'discord.js';
 import { fileURLToPath } from 'url';
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-const { token } = require('./config.json');
 
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -48,4 +47,4 @@ for (const file of eventFiles) {
 	}
 }
 
-client.login(token);
+client.login(process.env.DISCORD_TOKEN);

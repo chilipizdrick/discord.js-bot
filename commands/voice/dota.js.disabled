@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from 'discord.js';
+import { InteractionResponse, SlashCommandBuilder } from 'discord.js';
 import playAudioFromFile from '../../utils/playAudioFromFile.js';
 import fs from 'node:fs';
 const FILES_DIR = "assets/audio/dota";
@@ -15,9 +15,13 @@ const execute = async (interaction) => {
 	audioFiles.forEach(filename => pathsList.push(`${FILES_DIR}/${filename}`));
 	const randFile = pathsList[Math.floor(Math.random() * pathsList.length)];
 
-	playAudioFromFile(interaction, randFile);
-	
-	await interaction.deleteReply();
+	try {
+		playAudioFromFile(interaction, randFile);
+		await interaction.deleteReply();
+	} catch (error) {
+		interaction.editReply('Caught error while executing the commnad. Try again.');
+		console.log(error);
+	}
 }
 
 export { data, execute };

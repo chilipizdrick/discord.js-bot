@@ -30,6 +30,7 @@ const execute = async (interaction) => {
 
 	try {
 		const userData = JSON.parse(fs.readFileSync("userdata/user-data.json"));
+
 		const currUserData = {
 			"firstname": interaction.options.getString('firstname'),
 			"lastname": interaction.options.getString('lastname'),
@@ -44,8 +45,7 @@ const execute = async (interaction) => {
 		const userDataStr = JSON.stringify(userData);
 		fs.writeFile("userdata/user-data.json", userDataStr, (error) => {
 			if (error) {
-				interaction.editReply('Caught error while executing the command. Try again.');
-				console.log(error);
+				console.error(error);
 			}
 		});
 

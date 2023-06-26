@@ -7,8 +7,13 @@ const data = new SlashCommandBuilder()
 
 const execute = async (interaction) => {
     await interaction.deferReply();
-    playAudioFromFile(interaction, 'assets/audio/women.mp3');
-    await interaction.deleteReply();
+    try {
+		playAudioFromFile(interaction, 'assets/audio/women.mp3');
+		await interaction.deleteReply();
+	} catch (error) {
+		interaction.editReply('Caught error while executing the commnad. Try again.');
+		console.log(error);
+	}
 }
 
 export { data, execute };

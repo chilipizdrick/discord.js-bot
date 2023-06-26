@@ -1,5 +1,6 @@
 node_modules/
 userdata/
 config.json
+.env
 test.js
 assets\images\temp

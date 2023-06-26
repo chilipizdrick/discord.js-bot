@@ -23,9 +23,9 @@ const playAudioFromFile = (interaction, filePath) => {
             setTimeout(() => {
                 subscription.unsubscribe();
                 connection.destroy();
-            }, 20_000);
+            }, 25_000);
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     }
 }
