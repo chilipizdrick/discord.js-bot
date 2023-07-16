@@ -25,7 +25,8 @@ const execute = async (interaction) => {
             throw 'Current user not found in the database';
         }
         const currUserData = userData[interaction.member.id];
-        const captchaObj = await fetch(CAPTCHA_URL).then(res => res.json()).then();
+        const response = await fetch(CAPTCHA_URL);
+        const captchaObj = await response.json();
         const image = Buffer.from(captchaObj["Image"], 'base64');
         fs.writeFile("assets/images/captcha.jpg", image, (err) => {
             if (err) {
@@ -48,8 +49,8 @@ const execute = async (interaction) => {
         const captchaToken = tokenEncodeURI(captchaObj["Token"]);
 
         const mesFilter = m => (m.content.length === 6) && (m.member.id !== process.env.CLIENT_ID);
-        const userCaptchaResponse = await interaction.channel.awaitMessages({ mesFilter, max: 1, time: 60_000 })
-            .then(collectedMessages => collectedMessages.first().content.trim());
+        const collectedMessages = await interaction.channel.awaitMessages({ mesFilter, max: 1, time: 60_000 });
+        const userCaptchaResponse = await collectedMessages.first().content.trim();
         console.log(`Entered captcha: ${userCaptchaResponse}`);
 
         const payload = collectPayload(hash(currUserData), currUserData["id-number"], currUserData["region"], userCaptchaResponse, captchaToken);
@@ -57,12 +58,10 @@ const execute = async (interaction) => {
         await superagent
             .post(LOGIN_URL)
             .send(payload)
-            .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
-            .then(res => console.log(res.text));
+            .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 
-        const examData = await superagent
-            .get(EXAM_URL)
-            .then(res => JSON.parse(res.text));
+        const examDataResposne = await superagent.get(EXAM_URL);
+        const examData = JSON.parse(examDataResposne.text);
 
         const examPoints = {}
         for (const exam of examData["Result"]["Exams"]) {
