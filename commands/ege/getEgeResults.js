@@ -22,13 +22,13 @@ const execute = async (interaction) => {
         const userData = JSON.parse(fs.readFileSync("userdata/user-data.json"));
         if (!userData.hasOwnProperty(interaction.member.id)) {
             interaction.editReply('Current user not found in the database. Register first using /ege_reg.')
-            throw 'Current user not found in the database';
+            throw 'Current user not found in the database.';
         }
         const currUserData = userData[interaction.member.id];
         const response = await fetch(CAPTCHA_URL);
         const captchaObj = await response.json();
         const image = Buffer.from(captchaObj["Image"], 'base64');
-        fs.writeFile("assets/images/captcha.jpg", image, (err) => {
+        fs.writeFile("assets/images/temp/captcha.jpg", image, (err) => {
             if (err) {
                 interaction.editReply('Caught error while executing the command. Try again.');
                 console.error(err);
@@ -43,7 +43,7 @@ const execute = async (interaction) => {
             },
         };
 
-        const captchaImg = new AttachmentBuilder('assets/images/captcha.jpg');
+        const captchaImg = new AttachmentBuilder('assets/images/temp/captcha.jpg');
         await interaction.editReply({ embeds: [captchaEmbed], files: [captchaImg] });
 
         const captchaToken = tokenEncodeURI(captchaObj["Token"]);
@@ -90,8 +90,10 @@ const execute = async (interaction) => {
         await interaction.deleteReply();
 
     } catch (error) {
-        interaction.editReply('Caught error while executing the command. Try again ');
-        console.log(error);
+        if (error !== 'Current user not found in the database.') {
+            interaction.editReply('Caught error while executing the command. Try again ');
+            console.log(error);
+        }
     };
 }
 

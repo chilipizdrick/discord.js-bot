@@ -5,8 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "mkdir userdata/ && cd userdata/ && touch user-data.json && cd ../ && npm install blueimp-md5 && npm install cross-env && npm install discord.js && npm install dotenv && npm install @discordjs/voice && npm install ffmpeg-static && npm install libsodium-wrappers && npm install node-fetch && npm install superagent",
-    "start": "cross-env NODE_EXTRA_CA_CERTS=\"faulty_site_certificate/intermediate.pem\" node index.js",
+    "windows-start": "cross-env NODE_EXTRA_CA_CERTS=\"checkege.ru_ssl_certificate.pem\" node index.js",
+    "build": "npm install blueimp-md5 && npm install cross-env && npm install discord.js && npm install dotenv && npm install @discordjs/voice && npm install ffmpeg-static && npm install libsodium-wrappers && npm install node-fetch && npm install superagent",
+    "deploy-commands": "node deploy-commands.js",
+    "start": "chmod +x create_user-data.json.sh && ./create_user-data.json.sh && cross-env NODE_EXTRA_CA_CERTS=\"checkege.ru_ssl_certificate.pem\" node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

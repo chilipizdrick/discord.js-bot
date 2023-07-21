@@ -1,0 +1,9 @@
+node_modules/
+userdata/
+.env
+assets/images/temp
+.eslintrc.json
+.gitignore
+.node-version
+.git
+README.md
