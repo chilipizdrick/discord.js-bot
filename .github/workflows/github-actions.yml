@@ -27,6 +27,3 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/schizophrenia-bot:latest
-      
-      - name: Deploy image to server
-        run: cd scripts/ && chmod +x deploy_image_to_server.sh && ./deploy_image_to_server.sh ${${{ secrets.SSH_KEY }}} ${${{ secrets.SERVER_PUBLIC_KEY }}} ${${{ secrets.SERVER_IP }}}
