@@ -19,7 +19,7 @@ const data = new SlashCommandBuilder()
 const execute = async (interaction) => {
     await interaction.deferReply();
     try {
-        const userData = JSON.parse(fs.readFileSync("userdata/user-data.json"));
+        const userData = JSON.parse(fs.readFileSync("userdata/ege-user-data.json"));
         if (!userData.hasOwnProperty(interaction.member.id)) {
             interaction.editReply('Current user not found in the database. Register first using /ege_reg.')
             throw 'Current user not found in the database.';

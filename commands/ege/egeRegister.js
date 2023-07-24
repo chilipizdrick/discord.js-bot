@@ -29,7 +29,7 @@ const execute = async (interaction) => {
 	await interaction.deferReply();
 
 	try {
-		const userData = JSON.parse(fs.readFileSync("userdata/user-data.json"));
+		const userData = JSON.parse(fs.readFileSync("userdata/ege-user-data.json"));
 
 		const currUserData = {
 			"firstname": interaction.options.getString('firstname'),
@@ -43,7 +43,7 @@ const execute = async (interaction) => {
 		userData[userId] = currUserData
 
 		const userDataStr = JSON.stringify(userData);
-		fs.writeFile("userdata/user-data.json", userDataStr, (error) => {
+		fs.writeFile("userdata/ege-user-data.json", userDataStr, (error) => {
 			if (error) {
 				console.error(error);
 			}
