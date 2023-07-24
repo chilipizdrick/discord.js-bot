@@ -15,29 +15,26 @@ const playAudioFromFile = async (interaction, filePath) => {
 
         const resource = createAudioResource(filePath);
         audioPlayer.play(resource);
-        try {
-            const connection = joinVoiceChannel({
-                channelId: interaction.member.voice.channelId,
-                guildId: interaction.guild.id,
-                adapterCreator: interaction.guild.voiceAdapterCreator
-            });
-            
-            const subscription = connection.subscribe(audioPlayer);
-    
-            if (subscription) {
-                try {
-                    setTimeout(() => {
-                        subscription.unsubscribe();
-                        connection.destroy();
-                    }, await getDurationOfAudioFile(filePath));
-                } catch (error) {
-                    console.error(error);
-                }
+
+        const connection = joinVoiceChannel({
+            channelId: interaction.member.voice.channelId,
+            guildId: interaction.guild.id,
+            adapterCreator: interaction.guild.voiceAdapterCreator
+        });
+        
+        const subscription = connection.subscribe(audioPlayer);
+
+        if (subscription) {
+            try {
+                setTimeout(() => {
+                    subscription.unsubscribe();
+                    connection.destroy();
+                }, await getDurationOfAudioFile(filePath));
+            } catch (error) {
+                console.error(error);
             }
-        } catch(error) {
-            console.error('Could not connect to voice channel as it was not specified due to user not being in one!')
-            console.error(error);
         }
+
     } else {
         console.log('Voice client already connected.');
     }
