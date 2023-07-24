@@ -1,11 +1,11 @@
 import { InteractionResponse, SlashCommandBuilder } from 'discord.js';
 import playAudioFromFile from '../../utils/playAudioFromFile.js';
 import fs from 'node:fs';
-const FILES_DIR = "assets/audio/dota";
+const FILES_DIR = "assets/audio/cave_sounds";
 
 const data = new SlashCommandBuilder()
-    .setName('dota')
-    .setDescription('Plays dota.');
+    .setName('cave')
+    .setDescription('Plays random minecraft cave sound.');
 
 const execute = async (interaction) => {
 	await interaction.deferReply();
