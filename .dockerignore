@@ -3,7 +3,6 @@ node_modules/
 scripts/deploy.sh
 userdata/
 .env
-assets/images/temp
 .eslintrc.json
 .gitignore
 .node-version
