@@ -10,21 +10,21 @@ const execute = async (interaction) => {
 		.setCustomId('yes')
 		.setLabel('Yes')
 		.setStyle(ButtonStyle.Success);
-	
+
 	const no = new ButtonBuilder()
-	.setCustomId('no')
-	.setLabel('No')
-	.setStyle(ButtonStyle.Danger);
+		.setCustomId('no')
+		.setLabel('No')
+		.setStyle(ButtonStyle.Danger);
 
 	const actionRow = new ActionRowBuilder()
 		.addComponents(yes, no);
-	
+
 	const response = await interaction.reply({
 		content: 'Dogovor?',
 		components: [actionRow]
 	});
 
-	const collectorFilter = (i) => {i.user.id === interaction.user.id};
+	const collectorFilter = i => i.user.id === interaction.user.id;
 
 	try {
 		const confirmation = await response.awaitMessageComponent({ filter: collectorFilter, time: 60_000 });
@@ -42,7 +42,10 @@ const execute = async (interaction) => {
 			});
 		}
 	} catch (e) {
-		await interaction.editReply({ content: 'Confirmation not received within 1 minute, cancelling', components: [] });
+		await interaction.editReply({
+			content: 'Confirmation not received within 1 minute, cancelling',
+			components: []
+		});
 	}
 }
 
