@@ -3,3 +3,4 @@ userdata/
 .env
 assets/images/temp
 scripts/deploy.sh
+utils/colorPickerWebServer/
