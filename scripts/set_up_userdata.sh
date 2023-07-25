@@ -5,5 +5,5 @@ if [[ ! -e ../userdata/ege-user-data.json ]]; then
 fi
 
 if [[ ! -e ../userdata/greeting-user-data.json ]]; then
-    echo {"greetedMembers": \[\]} > ../userdata/greeting-user-data.json
+    echo {\"greetedMembers\": \[\]} > ../userdata/greeting-user-data.json
 fi

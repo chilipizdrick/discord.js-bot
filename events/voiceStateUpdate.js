@@ -1,14 +1,17 @@
 import { Events } from 'discord.js';
 import fs from 'node:fs';
 import { joinVoiceChannel, createAudioPlayer, createAudioResource } from '@discordjs/voice';
+import dotenv from 'dotenv';
 import getDurationOfAudioFile from '../utils/getDurationOfAudioFile.js';
-const GREETING_CHANNEL_ID = "724986342269911113";
 const GREETING_FILE_PATH = 'assets/audio/greeting.mp3'
+
+dotenv.config();
 
 const name = Events.VoiceStateUpdate;
 
 const execute = async (oldVoiceState, newVoiceState) => {
-    if (newVoiceState.member.id !== newVoiceState.client.user.id && oldVoiceState.channel === null && newVoiceState.channel.id === GREETING_CHANNEL_ID) {
+    if (newVoiceState.member.id !== newVoiceState.client.user.id 
+        && oldVoiceState.channel === null && newVoiceState.channel.id === process.env.GREETING_CHANNEL_ID) {
         const greetedMembers = JSON.parse(fs.readFileSync("userdata/greeting-user-data.json"));
         if (!greetedMembers["greetedMembers"].includes(newVoiceState.member.id)) {
             greetedMembers["greetedMembers"].push(newVoiceState.member.id);
