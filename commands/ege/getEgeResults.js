@@ -1,5 +1,4 @@
 import { SlashCommandBuilder, AttachmentBuilder } from 'discord.js';
-import fetch from 'node-fetch';
 import fs from 'node:fs';
 import md5 from 'blueimp-md5';
 import dotenv from 'dotenv';
@@ -25,8 +24,8 @@ const execute = async (interaction) => {
             throw 'Current user not found in the database.';
         }
         const currUserData = userData[interaction.member.id];
-        const response = await fetch(CAPTCHA_URL);
-        const captchaObj = await response.json();
+        const response = await superagent.get(CAPTCHA_URL);
+        const captchaObj = JSON.parse(response.text);
         const image = Buffer.from(captchaObj["Image"], 'base64');
         fs.writeFile("assets/images/temp/captcha.jpg", image, (err) => {
             if (err) {
