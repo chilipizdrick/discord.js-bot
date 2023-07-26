@@ -1,5 +1,4 @@
 import { joinVoiceChannel, createAudioPlayer, createAudioResource } from '@discordjs/voice';
-import getDurationOfAudioFile from './getDurationOfAudioFile.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -21,24 +20,24 @@ const playAudioFromFile = async (interaction, filePath) => {
             guildId: interaction.guild.id,
             adapterCreator: interaction.guild.voiceAdapterCreator
         });
-        
+
         const subscription = connection.subscribe(audioPlayer);
 
         if (subscription) {
-            try {
-                setTimeout(() => {
-                    subscription.unsubscribe();
-                    connection.destroy();
-                }, await getDurationOfAudioFile(filePath));
-            } catch (error) {
-                console.error(error);
-            }
+            audioPlayer.on('stateChange', (oldState, newState) => {
+                if (oldState.status === 'playing' && newState.status === 'idle') {
+                    try {
+                        subscription.unsubscribe();
+                        connection.destroy();
+                    } catch (err) {
+                        console.error(err);
+                    }
+                }
+            });
         }
-
     } else {
         console.log('Voice client already connected.');
     }
-
 }
 
 export default playAudioFromFile;

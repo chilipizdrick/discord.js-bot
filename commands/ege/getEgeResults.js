@@ -91,7 +91,7 @@ const execute = async (interaction) => {
 
     } catch (error) {
         if (error !== 'Current user not found in the database.') {
-            interaction.editReply('Caught error while executing the command. Try again ');
+            interaction.editReply('Caught error while executing the command. Try again.');
             console.log(error);
         }
     };

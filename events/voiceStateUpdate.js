@@ -2,7 +2,6 @@ import { Events } from 'discord.js';
 import fs from 'node:fs';
 import { joinVoiceChannel, createAudioPlayer, createAudioResource } from '@discordjs/voice';
 import dotenv from 'dotenv';
-import getDurationOfAudioFile from '../utils/getDurationOfAudioFile.js';
 const GREETING_FILE_PATH = 'assets/audio/greeting.mp3'
 
 dotenv.config();
@@ -10,7 +9,7 @@ dotenv.config();
 const name = Events.VoiceStateUpdate;
 
 const execute = async (oldVoiceState, newVoiceState) => {
-    if (newVoiceState.member.id !== newVoiceState.client.user.id 
+    if (newVoiceState.member.id !== newVoiceState.client.user.id
         && oldVoiceState.channel === null && newVoiceState.channel.id === process.env.GREETING_CHANNEL_ID) {
         const greetedMembers = JSON.parse(fs.readFileSync("userdata/greeting-user-data.json"));
         if (!greetedMembers["greetedMembers"].includes(newVoiceState.member.id)) {
@@ -40,14 +39,16 @@ const execute = async (oldVoiceState, newVoiceState) => {
             const subscription = connection.subscribe(audioPlayer);
 
             if (subscription) {
-                try {
-                    setTimeout(() => {
-                        subscription.unsubscribe();
-                        connection.destroy();
-                    }, await getDurationOfAudioFile(GREETING_FILE_PATH));
-                } catch (error) {
-                    console.error(error);
-                }
+                audioPlayer.on('stateChange', (oldState, newState) => {
+                    if (oldState.status === 'playing' && newState.status === 'idle') {
+                        try {
+                            subscription.unsubscribe();
+                            connection.destroy();
+                        } catch (err) {
+                            console.error(err);
+                        }
+                    }
+                });
             }
         }
     }

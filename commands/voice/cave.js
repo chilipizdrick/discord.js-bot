@@ -1,4 +1,4 @@
-import { InteractionResponse, SlashCommandBuilder } from 'discord.js';
+import { SlashCommandBuilder } from 'discord.js';
 import playAudioFromFile from '../../utils/playAudioFromFile.js';
 import fs from 'node:fs';
 const FILES_DIR = "assets/audio/cave_sounds";
