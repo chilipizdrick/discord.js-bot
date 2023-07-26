@@ -24,8 +24,8 @@ const execute = async (interaction) => {
             throw 'Current user not found in the database.';
         }
         const currUserData = userData[interaction.member.id];
-        const response = await superagent.get(CAPTCHA_URL);
-        const captchaObj = JSON.parse(response.text);
+        const captchaResponse = await superagent.get(CAPTCHA_URL);
+        const captchaObj = JSON.parse(captchaResponse.text);
         const image = Buffer.from(captchaObj["Image"], 'base64');
         fs.writeFile("assets/images/temp/captcha.jpg", image, (err) => {
             if (err) {
@@ -77,7 +77,7 @@ const execute = async (interaction) => {
 
         const resultsEmbed = {
             color: 0x00FF00,
-            title: `Баллы ЕГЭ пользователя @${interaction.member.displayName}: \n`,
+            title: `Баллы ЕГЭ пользователя ${interaction.member}: \n`,
             fields: []
         };
 
