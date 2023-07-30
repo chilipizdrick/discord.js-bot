@@ -29,21 +29,21 @@ const execute = async (interaction) => {
 	await interaction.deferReply();
 
 	try {
-		const userData = JSON.parse(fs.readFileSync("userdata/ege-user-data.json"));
+		const userData = JSON.parse(fs.readFileSync('userdata/ege-user-data.json'));
 
 		const currUserData = {
-			"firstname": interaction.options.getString('firstname'),
-			"lastname": interaction.options.getString('lastname'),
-			"surname": interaction.options.getString('surname'),
-			"id-number": interaction.options.getString('id-number'),
-			"region": interaction.options.getString('region')
-		}
+			'firstname': interaction.options.getString('firstname'),
+			'lastname': interaction.options.getString('lastname'),
+			'surname': interaction.options.getString('surname'),
+			'id-number': interaction.options.getString('id-number'),
+			'region': interaction.options.getString('region'),
+		};
 
-		const userId = interaction.member.id
-		userData[userId] = currUserData
+		const userId = interaction.member.id;
+		userData[userId] = currUserData;
 
 		const userDataStr = JSON.stringify(userData);
-		fs.writeFile("userdata/ege-user-data.json", userDataStr, (error) => {
+		fs.writeFile('userdata/ege-user-data.json', userDataStr, (error) => {
 			if (error) {
 				console.error(error);
 			}
@@ -53,7 +53,7 @@ const execute = async (interaction) => {
 	} catch (error) {
 		interaction.editReply('An error occured while executing the command. Try again.');
 		console.log(error);
-	};
-}
+	}
+};
 
 export { data, execute };

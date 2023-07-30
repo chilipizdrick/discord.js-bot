@@ -1,17 +1,17 @@
-import { InteractionResponse, SlashCommandBuilder } from 'discord.js';
+import { SlashCommandBuilder } from 'discord.js';
 import playAudioFromFile from '../../utils/playAudioFromFile.js';
 import fs from 'node:fs';
-const FILES_DIR = "assets/audio/dota";
+const FILES_DIR = 'assets/audio/dota';
 
 const data = new SlashCommandBuilder()
-    .setName('dota')
-    .setDescription('Plays dota.');
+	.setName('dota')
+	.setDescription('Plays dota.');
 
 const execute = async (interaction) => {
 	await interaction.deferReply();
-	
+
 	const audioFiles = fs.readdirSync(FILES_DIR);
-	let pathsList = [];
+	const pathsList = [];
 	audioFiles.forEach(filename => pathsList.push(`${FILES_DIR}/${filename}`));
 	const randFile = pathsList[Math.floor(Math.random() * pathsList.length)];
 
@@ -22,6 +22,6 @@ const execute = async (interaction) => {
 		interaction.editReply('Caught error while executing the commnad. Try again.');
 		console.log(error);
 	}
-}
+};
 
 export { data, execute };

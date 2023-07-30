@@ -21,7 +21,7 @@ const execute = async (interaction) => {
 
 	const response = await interaction.reply({
 		content: 'Dogovor?',
-		components: [actionRow]
+		components: [actionRow],
 	});
 
 	const collectorFilter = i => i.user.id === interaction.user.id;
@@ -32,21 +32,21 @@ const execute = async (interaction) => {
 		if (confirmation.customId === 'yes') {
 			await confirmation.update({
 				content: 'Dogovor!',
-				components: []
+				components: [],
 			});
 		}
 		if (confirmation.customId === 'no') {
 			await confirmation.update({
 				content: 'No dogovor 😢',
-				components: []
+				components: [],
 			});
 		}
 	} catch (e) {
 		await interaction.editReply({
 			content: 'Confirmation not received within 1 minute, cancelling',
-			components: []
+			components: [],
 		});
 	}
-}
+};
 
 export { data, execute };

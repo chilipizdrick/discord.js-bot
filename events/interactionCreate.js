@@ -6,12 +6,12 @@ const execute = async (interaction) => {
 	if (!interaction.isChatInputCommand()) return;
 	if (interaction.isChatInputCommand()) {
 		const command = interaction.client.commands.get(interaction.commandName);
-		
+
 		if (!command) {
 			console.error(`No command matching ${interaction.commandName} was found.`);
 			return;
 		}
-		
+
 		try {
 			await command.execute(interaction);
 		} catch (error) {
@@ -19,6 +19,6 @@ const execute = async (interaction) => {
 			console.error(error);
 		}
 	}
-}
+};
 
 export { name, execute };

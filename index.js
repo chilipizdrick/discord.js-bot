@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import dotenv from 'dotenv';
-import { Client, Collection, GatewayIntentBits} from 'discord.js';
+import { Client, Collection, GatewayIntentBits } from 'discord.js';
 import { fileURLToPath } from 'url';
 
 dotenv.config();
@@ -9,10 +9,12 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds,
-									  GatewayIntentBits.GuildMessages,
-									  GatewayIntentBits.MessageContent,
-									  GatewayIntentBits.GuildVoiceStates] });
+const client = new Client({
+	intents: [GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.MessageContent,
+		GatewayIntentBits.GuildVoiceStates],
+});
 
 client.commands = new Collection();
 
@@ -25,7 +27,7 @@ for (const folder of commandFolders) {
 	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
-		const command = await import(`file:///${filePath}`).then();
+		const command = await import(`file:///${filePath}`);
 		if (command.data && command.execute) {
 			client.commands.set(command.data.name, command);
 		} else {
@@ -39,7 +41,7 @@ const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'
 
 for (const file of eventFiles) {
 	const filePath = path.join(eventsPath, file);
-	const event = await import(`file:///${filePath}`).then();
+	const event = await import(`file:///${filePath}`);
 	if (event.once) {
 		client.once(event.name, (...args) => event.execute(...args));
 	} else {
