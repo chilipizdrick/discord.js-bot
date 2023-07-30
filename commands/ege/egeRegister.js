@@ -51,7 +51,7 @@ const execute = async (interaction) => {
 
 		interaction.editReply('Registration successful!');
 	} catch (error) {
-		interaction.editReply('Caught error while executing the command. Try again.');
+		interaction.editReply('An error occured while executing the command. Try again.');
 		console.log(error);
 	};
 }

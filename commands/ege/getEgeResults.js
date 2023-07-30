@@ -29,7 +29,7 @@ const execute = async (interaction) => {
         const image = Buffer.from(captchaObj["Image"], 'base64');
         fs.writeFile("assets/images/temp/captcha.jpg", image, (err) => {
             if (err) {
-                interaction.editReply('Caught error while executing the command. Try again.');
+                interaction.editReply('An error occured while executing the command. Try again.');
                 console.error(err);
             }
         });
@@ -90,8 +90,8 @@ const execute = async (interaction) => {
 
     } catch (error) {
         if (error !== 'Current user not found in the database.') {
-            interaction.editReply('Caught error while executing the command. Try again.');
-            console.log(error);
+            interaction.editReply('An error occured while executing the command. Try again.');
+            console.error(error);
         }
     };
 }
