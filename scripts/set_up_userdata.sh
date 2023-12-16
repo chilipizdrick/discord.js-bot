@@ -1,5 +1,7 @@
 #! /bin/bash -
 
+cd ../
+
 if [[ ! -e ../userdata/ege-user-data.json ]]; then
     echo {} > ../userdata/ege-user-data.json
 fi
