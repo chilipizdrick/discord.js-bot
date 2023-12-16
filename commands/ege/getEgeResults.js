@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, AttachmentBuilder } from 'discord.js';
-import fs from 'node:fs';
+import fs, { existsSync } from 'node:fs';
 import md5 from 'blueimp-md5';
 import dotenv from 'dotenv';
 import { createRequire } from 'module';
@@ -27,6 +27,11 @@ const execute = async (interaction) => {
 		const captchaResponse = await superagent.get(CAPTCHA_URL);
 		const captchaObj = JSON.parse(captchaResponse.text);
 		const image = Buffer.from(captchaObj['Image'], 'base64');
+		if (!fs.existsSync('assets/images/temp')) {
+			fs.mkdir('./assets/images/temp', { recursive: true }, (err) => {
+  				if (err) throw err;
+			});
+		}
 		fs.writeFile('assets/images/temp/captcha.jpg', image, (err) => {
 			if (err) {
 				interaction.editReply('An error occured while executing the command. Try again.');
