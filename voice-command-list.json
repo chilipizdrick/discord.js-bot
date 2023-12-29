@@ -1,0 +1,24 @@
+{
+    "commands": [
+        {
+            "name": "pipe",
+            "description": "Plays pipe sound."
+        },
+        {
+            "name": "women",
+            "description": "Plays women."
+        },
+        {
+            "name": "oblivionNPC",
+            "description": "Plays Oblivion NPC theme."
+        },
+        {
+            "name": "dota",
+            "description": "Plays dota."
+        },
+        {
+            "name": "cave",
+            "description": "Plays random minecraft cave sound."
+        }
+    ]
+}

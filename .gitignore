@@ -5,3 +5,5 @@ assets/images/temp/*
 scripts/deploy.sh
 utils/colorPickerWebServer/
 commands/youtube/
+assets/audio/*
+assets.zip

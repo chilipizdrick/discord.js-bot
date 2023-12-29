@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from 'discord.js';
 import playAudioFromFile from '../../utils/playAudioFromFile.js';
 import pickRandomFileFromDirectory from '../../utils/pickRandomFileFromDirectory.js';
 
-const FILES_DIR = 'assets/audio/dota';
+const FILES_DIR = 'assets/audio/voice_commands/dota';
 
 const data = new SlashCommandBuilder()
 	.setName('dota')

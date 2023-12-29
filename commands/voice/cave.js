@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from 'discord.js';
 import playAudioFromFile from '../../utils/playAudioFromFile.js';
 import pickRandomFileFromDirectory from '../../utils/pickRandomFileFromDirectory.js';
 
-const FILES_DIR = 'assets/audio/cave_sounds';
+const FILES_DIR = 'assets/audio/voice_commands/cave';
 
 const data = new SlashCommandBuilder()
 	.setName('cave')
